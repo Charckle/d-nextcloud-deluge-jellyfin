@@ -1,10 +1,10 @@
 # Premis
 
-A set of Docker container to host a NAS/cloud and a torrent client.
+A set of Docker container to host a NAS/cloud, torrent client and media center.
 
 # Resources
 
-For this project the resources used are nextcloud and deluge, both from the image of linuxserver repository on the Docker webpage.
+For this project the resources used are nextcloud, deluge and jellyfin, all from the image of linuxserver repository on the Docker webpage.
 
 # Configuration
 
