@@ -1,0 +1,58 @@
+version: "2.1"
+services:
+
+    nextcloud:
+        image: linuxserver/nextcloud:latest
+        ports:
+            - 8080:80
+            - 443:443
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=${TIME_Z}
+        volumes:
+            - ${NEXTCLOUD_CONF}:/config
+            - ${NEXTCLOUD_DATA}:/data
+        restart: always 
+
+    deluge:
+        image: linuxserver/deluge:latest
+        ports:
+            - 8112:8112
+        container_name: deluge
+        network_mode: host
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=${TIME_Z}
+        depends_on: 
+            - nextcloud
+        volumes:
+                - ${DELUGE_CONF}:/config
+                - ${DELUGE_DATA}:/downloads
+        restart: unless-stopped
+        
+    jellyfin:
+        image: linuxserver/jellyfin
+        container_name: jellyfin
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=${TIME_Z}
+            - UMASK_SET=022 #optional
+        volumes:
+            - ${JELLY_CONF}:/config
+            - ${JELLY_DATA}:/data/torrents
+            - /opt/vc/lib:/opt/vc/lib #optional
+        ports:
+            - 8096:8096
+            - 8920:8920 #optional
+        devices:
+            - /dev/dri:/dev/dri #optional
+            - /dev/vcsm:/dev/vcsm #optional
+            - /dev/vchiq:/dev/vchiq #optional
+            - /dev/video10:/dev/video10 #optional
+            - /dev/video11:/dev/video11 #optional
+            - /dev/video12:/dev/video12 #optional
+        restart: unless-stopped
+
